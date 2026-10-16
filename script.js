@@ -1,164 +1,128 @@
-const checkInForm = document.getElementById('checkInForm');
-const attendeeNameInput = document.getElementById('attendeeName');
-const teamSelect = document.getElementById('teamSelect');
-const greeting = document.getElementById('greeting');
-const attendeeCount = document.getElementById('attendeeCount');
-const progressContainer = document.querySelector('.progress-container');
-const progressBar = document.getElementById('progressBar');
-const capacityMessage = document.getElementById('capacityMessage');
-const goalCelebration = document.getElementById('goalCelebration');
-const celebrationWinner = document.getElementById('celebrationWinner');
-const rosterCount = document.getElementById('rosterCount');
-const emptyRoster = document.getElementById('emptyRoster');
-const attendeeList = document.getElementById('attendeeList');
-const teamLead = document.getElementById('teamLead');
+const scoreDisplay = document.getElementById('score');
+const scoreFill = document.getElementById('scoreFill');
+const scoreTrack = document.querySelector('.score-track');
+const gameMessage = document.getElementById('gameMessage');
+const gameBoard = document.getElementById('gameBoard');
+const resetButton = document.getElementById('resetButton');
+const celebration = document.getElementById('celebration');
+const confetti = document.getElementById('confetti');
 
-const teamNames = {
-	water: 'Team Water Wise',
-	zero: 'Team Net Zero',
-	power: 'Team Renewables'
-};
+const goal = 10;
+const tileCount = 9;
+let score = 0;
+let gameOver = false;
 
-let attendees = JSON.parse(localStorage.getItem('summitAttendees')) || [];
+function createTiles() {
+	const tileTypes = ['water', 'water', 'water', 'water', 'water', 'water', 'pollution', 'pollution', 'pollution'];
 
-function updateAttendance() {
-	const teamCounts = {
-		water: 0,
-		zero: 0,
-		power: 0
-	};
-
-	attendeeCount.textContent = attendees.length;
-	progressContainer.setAttribute('aria-valuenow', attendees.length);
-	progressBar.style.width = `${attendees.length / 50 * 100}%`;
-	capacityMessage.textContent = attendees.length >= 50
-		? 'Summit is at capacity'
-		: `${50 - attendees.length} spots available`;
-	rosterCount.textContent = attendees.length === 1
-		? '1 person'
-		: `${attendees.length} people`;
-	emptyRoster.hidden = attendees.length > 0;
-	attendeeList.innerHTML = '';
-
-	for (let index = 0; index < attendees.length; index++) {
-		const attendee = attendees[index];
-		teamCounts[attendee.team]++;
-
-		const listItem = document.createElement('li');
-		const name = document.createElement('span');
-		const team = document.createElement('span');
-
-		name.textContent = attendee.name;
-		team.textContent = teamNames[attendee.team];
-		team.className = `attendee-team ${attendee.team}`;
-		listItem.append(name, team);
-		attendeeList.appendChild(listItem);
+	for (let index = tileTypes.length - 1; index > 0; index--) {
+		const randomIndex = Math.floor(Math.random() * (index + 1));
+		const currentTile = tileTypes[index];
+		tileTypes[index] = tileTypes[randomIndex];
+		tileTypes[randomIndex] = currentTile;
 	}
 
-	const teamKeys = ['water', 'zero', 'power'];
-	let highestCount = 0;
+	gameBoard.innerHTML = '';
 
-	for (let index = 0; index < teamKeys.length; index++) {
-		const teamKey = teamKeys[index];
-		const count = teamCounts[teamKey];
-		const share = attendees.length === 0 ? 0 : Math.round(count / attendees.length * 100);
-		const teamCard = document.querySelector(`.team-card.${teamKey}`);
-		const teamProgress = teamCard.querySelector('.team-progress');
-
-		document.getElementById(`${teamKey}Count`).textContent = count;
-		document.getElementById(`${teamKey}Share`).textContent = `${share}% of turnout`;
-		document.getElementById(`${teamKey}Bar`).style.width = `${share}%`;
-		teamProgress.setAttribute('aria-valuenow', share);
-		highestCount = Math.max(highestCount, count);
-	}
-
-	let leaders = [];
-	if (highestCount > 0) {
-		leaders = teamKeys.filter(function (teamKey) {
-			return teamCounts[teamKey] === highestCount;
-		});
-	}
-
-	if (highestCount === 0) {
-		teamLead.textContent = 'Ready to welcome you';
-	} else {
-		for (let index = 0; index < teamKeys.length; index++) {
-			const teamKey = teamKeys[index];
-			const standing = document.getElementById(`${teamKey}Standing`);
-			const teamCard = document.querySelector(`.team-card.${teamKey}`);
-			const isWinner = attendees.length >= 50 && teamCounts[teamKey] === highestCount;
-
-			if (isWinner) {
-				teamCard.classList.add('is-winner');
-				standing.textContent = leaders.length > 1 ? 'Tied winner' : 'Summit winner';
-			} else {
-				teamCard.classList.remove('is-winner');
-				standing.textContent = teamCounts[teamKey] === highestCount
-					? (leaders.length > 1 ? 'Tied for lead' : 'Leading')
-					: 'In the race';
-			}
-		}
-
-		if (leaders.length > 1) {
-			teamLead.textContent = 'It’s a tie at the top';
-		} else {
-			teamLead.textContent = `${teamNames[leaders[0]]} is leading`;
-		}
-	}
-
-	goalCelebration.hidden = attendees.length < 50;
-	if (attendees.length >= 50) {
-		if (leaders.length > 1) {
-			celebrationWinner.textContent = `A tie! ${leaders.map(function (teamKey) {
-				return teamNames[teamKey];
-			}).join(' and ')} share the lead with ${highestCount} attendees each.`;
-		} else {
-			celebrationWinner.textContent = `${teamNames[leaders[0]]} leads the summit with ${highestCount} attendees.`;
-		}
+	for (let index = 0; index < tileCount; index++) {
+		const tile = document.createElement('button');
+		tile.className = 'game-tile';
+		tile.type = 'button';
+		tile.textContent = '?';
+		tile.setAttribute('aria-label', `Reveal tile ${index + 1}`);
+		tile.dataset.type = tileTypes[index];
+		tile.addEventListener('click', handleTileClick);
+		gameBoard.appendChild(tile);
 	}
 }
 
-checkInForm.addEventListener('submit', function (event) {
-	event.preventDefault();
+function updateScore() {
+	scoreDisplay.textContent = score;
+	scoreFill.style.width = `${score / goal * 100}%`;
+	scoreTrack.setAttribute('aria-valuenow', score);
+}
 
-	const name = attendeeNameInput.value.trim();
-	const team = teamSelect.value;
-	if (!name) {
-		greeting.textContent = 'Please enter an attendee name.';
-		greeting.className = 'error-message';
-		greeting.style.display = 'block';
-		attendeeNameInput.focus();
+function celebrateWin() {
+	gameOver = true;
+	celebration.hidden = false;
+	gameMessage.textContent = 'You reached the clean water goal!';
+	createConfetti();
+	disableBoard();
+}
+
+function createConfetti() {
+	const colors = ['confetti-yellow', 'confetti-blue', 'confetti-teal'];
+	confetti.innerHTML = '';
+
+	for (let index = 0; index < 30; index++) {
+		const piece = document.createElement('span');
+		piece.className = `confetti-piece ${colors[index % colors.length]}`;
+		piece.style.left = `${index / 30 * 100}%`;
+		piece.style.animationDelay = `${index % 8 * 0.08}s`;
+		confetti.appendChild(piece);
+	}
+}
+
+function disableBoard() {
+	const tiles = gameBoard.querySelectorAll('.game-tile');
+
+	for (let index = 0; index < tiles.length; index++) {
+		tiles[index].disabled = true;
+	}
+}
+
+function handleTileClick(event) {
+	if (gameOver) {
 		return;
 	}
 
-	const matchingName = attendees.some(function (attendee) {
-		return attendee.name.toLowerCase() === name.toLowerCase();
-	});
+	const tile = event.currentTarget;
+	const tileType = tile.dataset.type;
+	tile.disabled = true;
+	tile.classList.add(`is-${tileType}`);
 
-	if (matchingName) {
-		greeting.textContent = `${name} is already checked in.`;
-		greeting.className = 'error-message';
-		greeting.style.display = 'block';
-		attendeeNameInput.focus();
+	if (tileType === 'water') {
+		tile.textContent = '💧';
+		tile.setAttribute('aria-label', 'Clean water found');
+		score++;
+		gameMessage.textContent = 'A clean water drop! Your score went up by 1.';
+	} else {
+		tile.textContent = '🛢️';
+		tile.setAttribute('aria-label', 'Pollution found');
+		const previousScore = score;
+		score = Math.max(0, score - 2);
+		const lostDrops = previousScore - score;
+		if (lostDrops === 0) {
+			gameMessage.textContent = 'Pollution! Your score is already at zero.';
+		} else if (lostDrops === 1) {
+			gameMessage.textContent = 'Pollution! Your score went down by 1 drop.';
+		} else {
+			gameMessage.textContent = `Pollution! Your score went down by ${lostDrops} drops.`;
+		}
+	}
+
+	updateScore();
+
+	if (score >= goal) {
+		celebrateWin();
 		return;
 	}
 
-	if (attendees.length >= 50) {
-		greeting.textContent = 'The summit has reached its 50-person check-in limit.';
-		greeting.className = 'error-message';
-		greeting.style.display = 'block';
-		return;
+	if (gameBoard.querySelectorAll(':disabled').length === tileCount) {
+		createTiles();
+		gameMessage.textContent = 'New tiles are ready. Keep collecting clean water!';
 	}
+}
 
-	attendees.push({ name: name, team: team });
-	localStorage.setItem('summitAttendees', JSON.stringify(attendees));
-	updateAttendance();
+function resetGame() {
+	score = 0;
+	gameOver = false;
+	celebration.hidden = true;
+	confetti.innerHTML = '';
+	gameMessage.textContent = 'Pick a covered tile to reveal what’s inside.';
+	updateScore();
+	createTiles();
+}
 
-	greeting.textContent = `Welcome, ${name}! You are checked in with ${teamNames[team]}.`;
-	greeting.className = 'success-message';
-	greeting.style.display = 'block';
-	checkInForm.reset();
-	attendeeNameInput.focus();
-});
-
-updateAttendance();
+resetButton.addEventListener('click', resetGame);
+resetGame();

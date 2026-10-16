@@ -3,141 +3,68 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Intel Sustainability Summit Check-In</title>
-    <!-- Add Font Awesome CSS -->
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
-    />
+    <meta name="theme-color" content="#ffffff" />
+    <title>Clean Water Quest | charity: water</title>
     <link rel="stylesheet" href="style.css" />
+    <script src="script.js" defer></script>
   </head>
   <body>
-    <header class="hero">
-      <div class="hero-content">
-        <div class="brand-row">
-          <img src="img/intel-logo.svg" alt="Intel" class="intel-logo" />
-          <span class="event-label">COMPANY-WIDE SUMMIT <span class="live-dot"></span> LIVE CHECK-IN</span>
-        </div>
-        <p class="hero-kicker">One team. A lighter footprint.</p>
-        <h1>Team Sustainability Summit</h1>
-        <p class="hero-description">Reducing emissions. Conserving water. Building a sustainable future.</p>
-      </div>
+    <header class="site-header">
+      <a class="brand" href="#home" aria-label="charity: water home">
+        <span class="brand-drop" aria-hidden="true"></span>
+        <span>charity<span class="brand-colon">:</span> water</span>
+      </a>
+      <span class="header-note">A little game. A big difference.</span>
     </header>
 
-    <main class="dashboard">
-      <section class="attendance-tracker" aria-labelledby="attendanceHeading">
-        <div class="attendance-copy">
+    <main id="home">
+      <section class="intro" aria-labelledby="gameTitle">
+        <p class="eyebrow">THE CLEAN WATER QUEST</p>
+        <h1 id="gameTitle">Every drop counts.</h1>
+        <p class="intro-copy">
+          Find clean water and dodge the pollution. Can you collect 10 drops?
+        </p>
+      </section>
+
+      <section class="game-card" aria-label="Clean Water Quest game">
+        <div class="game-top">
           <div>
-            <p class="section-kicker">SUMMIT CHECK-IN</p>
-            <h2 id="attendanceHeading">A great turnout starts here.</h2>
+            <p class="eyebrow">YOUR CLEAN WATER SCORE</p>
+            <p class="score-line"><span id="score">0</span><span class="score-goal"> / 10 drops</span></p>
           </div>
-          <p class="attendance-total"><strong id="attendeeCount">0</strong><span> / 50<br />attendees</span></p>
+          <button class="reset-button" id="resetButton" type="button">Start over</button>
         </div>
-        <div
-          class="progress-container"
-          role="progressbar"
-          aria-label="Summit attendance"
-          aria-valuemin="0"
-          aria-valuemax="50"
-          aria-valuenow="0"
-        >
-          <div id="progressBar" class="progress-bar"></div>
+
+        <div class="score-track" role="progressbar" aria-label="Clean water drops collected" aria-valuemin="0" aria-valuemax="10" aria-valuenow="0">
+          <div class="score-fill" id="scoreFill"></div>
         </div>
-        <p class="capacity-note"><span>SUMMIT CAPACITY</span><span id="capacityMessage">50 spots available</span></p>
+
+        <p class="game-message" id="gameMessage" role="status" aria-live="polite">
+          Pick a covered tile to reveal what’s inside.
+        </p>
+
+        <div class="game-board" id="gameBoard" aria-label="Choose a tile"></div>
+
+        <p class="game-hint">
+          <span aria-hidden="true">💧</span> Clean water: +1 drop
+          <span class="hint-divider" aria-hidden="true">·</span>
+          <span aria-hidden="true">🛢️</span> Pollution: −2 drops
+        </p>
+
+        <div class="celebration" id="celebration" role="status" aria-live="polite" hidden>
+          <div class="confetti" id="confetti" aria-hidden="true"></div>
+          <span class="celebration-icon" aria-hidden="true">🎉</span>
+          <h2>Quest complete!</h2>
+          <p>You collected 10 clean water drops. Every drop makes a difference!</p>
+        </div>
       </section>
 
-      <section id="goalCelebration" class="goal-celebration" role="region" aria-label="Summit goal celebration" aria-live="polite" aria-atomic="true" hidden>
-        <span class="celebration-icon" aria-hidden="true"><i class="fas fa-champagne-glasses"></i></span>
-        <div>
-          <h2 id="celebrationTitle">Summit goal reached!</h2>
-          <p id="celebrationWinner"></p>
-        </div>
-      </section>
-
-      <div class="dashboard-grid">
-        <section class="check-in-panel" aria-labelledby="checkInHeading">
-          <div class="panel-heading">
-            <p class="section-kicker">WELCOME, ATTENDEE</p>
-            <h2 id="checkInHeading">Check in</h2>
-            <p>Join your team and help shape a more sustainable future.</p>
-          </div>
-          <p id="greeting" role="status" aria-live="polite"></p>
-          <form class="check-in" id="checkInForm">
-            <div class="field-control">
-              <label for="attendeeName">Your name</label>
-              <input
-                type="text"
-                id="attendeeName"
-                name="attendeeName"
-                placeholder="e.g. Alex Morgan"
-                autocomplete="name"
-                required
-              />
-            </div>
-            <div class="field-control">
-              <label for="teamSelect">Your sustainability team</label>
-              <select id="teamSelect" name="team" required>
-                <option value="" disabled selected>Choose your team</option>
-                <option value="water">Team Water Wise</option>
-                <option value="zero">Team Net Zero</option>
-                <option value="power">Team Renewables</option>
-              </select>
-            </div>
-            <button type="submit" id="checkInBtn">
-              <i class="fas fa-arrow-right" aria-hidden="true"></i> Check in
-            </button>
-          </form>
-          <p class="privacy-note"><i class="fas fa-lock" aria-hidden="true"></i> Your check-in is saved on this device.</p>
-        </section>
-
-        <section class="team-stats" aria-labelledby="teamHeading">
-          <div class="section-heading">
-            <div>
-              <p class="section-kicker">THE FRIENDLY RACE</p>
-              <h2 id="teamHeading">Team turnout</h2>
-            </div>
-            <p id="teamLead" class="team-lead">Ready to welcome you</p>
-          </div>
-          <div class="teams-grid">
-            <article class="team-card water">
-              <div class="team-card-heading"><span class="team-mark" aria-hidden="true">W</span><span class="team-name">Team Water Wise</span><span class="team-count" id="waterCount">0</span></div>
-              <div class="team-progress" role="progressbar" aria-label="Water Wise share of attendees" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><span id="waterBar"></span></div>
-              <div class="team-card-footer"><span id="waterShare">0% of turnout</span><span id="waterStanding">Ready</span></div>
-            </article>
-            <article class="team-card zero">
-              <div class="team-card-heading"><span class="team-mark" aria-hidden="true">N</span><span class="team-name">Team Net Zero</span><span class="team-count" id="zeroCount">0</span></div>
-              <div class="team-progress" role="progressbar" aria-label="Net Zero share of attendees" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><span id="zeroBar"></span></div>
-              <div class="team-card-footer"><span id="zeroShare">0% of turnout</span><span id="zeroStanding">Ready</span></div>
-            </article>
-            <article class="team-card power">
-              <div class="team-card-heading"><span class="team-mark" aria-hidden="true">R</span><span class="team-name">Team Renewables</span><span class="team-count" id="powerCount">0</span></div>
-              <div class="team-progress" role="progressbar" aria-label="Renewables share of attendees" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><span id="powerBar"></span></div>
-              <div class="team-card-footer"><span id="powerShare">0% of turnout</span><span id="powerStanding">Ready</span></div>
-            </article>
-          </div>
-        </section>
-      </div>
-
-      <section class="attendee-roster" aria-labelledby="rosterHeading">
-        <div class="roster-header">
-          <div><p class="section-kicker">HERE TO MAKE A DIFFERENCE</p><h2 id="rosterHeading">Checked-in attendees</h2></div>
-          <span id="rosterCount">0 people</span>
-        </div>
-        <p id="emptyRoster">Your team is waiting. Be the first to check in.</p>
-        <ul id="attendeeList" aria-live="polite"></ul>
-      </section>
+      <p class="mission-note">
+        <span class="mission-drop" aria-hidden="true"></span>
+        Clean water changes everything. Learn more about the mission at
+        <a href="https://www.charitywater.org/" target="_blank" rel="noreferrer">charity: water</a>.
+      </p>
     </main>
-
-    <footer class="footer">
-      <span>Intel Sustainability Summit <span aria-hidden="true">·</span> 2026</span>
-      <span>Created by Richmond Korsah</span>
-      <a
-        href="https://www.intel.com/content/www/us/en/corporate-responsibility/2030-goals.html"
-        class="footer-link"
-        >Explore Intel sustainability goals <i class="fas fa-arrow-up-right-from-square" aria-hidden="true"></i></a
-      >
-    </footer>
-
-    <script src="script.js"></script>
+    <footer>Made to celebrate a world where everyone has access to clean water.</footer>
   </body>
 </html>
