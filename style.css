@@ -175,6 +175,38 @@ h1 {
   background: #eefaff;
 }
 
+.difficulty-control {
+  display: grid;
+  grid-template-columns: auto minmax(120px, 1fr);
+  align-items: center;
+  gap: 7px 12px;
+  margin-top: 17px;
+}
+
+.difficulty-control label {
+  color: var(--ink);
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.difficulty-control select {
+  min-height: 38px;
+  padding: 6px 10px;
+  border: 1px solid #cbd8d6;
+  border-radius: 7px;
+  background: #fff;
+  color: var(--ink);
+  font: inherit;
+  font-size: 13px;
+}
+
+.difficulty-control p {
+  grid-column: 1 / -1;
+  margin: 0;
+  color: var(--muted);
+  font-size: 12px;
+}
+
 .score-track {
   height: 10px;
   margin: 12px 0 15px;
@@ -353,8 +385,26 @@ footer {
   text-align: center;
 }
 
+footer p {
+  margin: 0 0 6px;
+}
+
+footer nav {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 7px;
+}
+
+footer a {
+  color: #007da8;
+  font-weight: 700;
+  text-underline-offset: 3px;
+}
+
 button:focus-visible,
-a:focus-visible {
+a:focus-visible,
+select:focus-visible {
   outline: 3px solid #e3aa00;
   outline-offset: 3px;
 }

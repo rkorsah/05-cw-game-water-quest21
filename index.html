@@ -22,7 +22,7 @@
         <p class="eyebrow">THE CLEAN WATER QUEST</p>
         <h1 id="gameTitle">Every drop counts.</h1>
         <p class="intro-copy">
-          Find clean water and dodge the pollution. Can you collect 10 drops?
+          Find clean water and dodge the pollution. Choose your difficulty and collect clean water drops.
         </p>
       </section>
 
@@ -30,9 +30,19 @@
         <div class="game-top">
           <div>
             <p class="eyebrow">YOUR CLEAN WATER SCORE</p>
-            <p class="score-line"><span id="score">0</span><span class="score-goal"> / 10 drops</span></p>
+            <p class="score-line"><span id="score">0</span><span class="score-goal" id="scoreGoal"> / 10 drops</span></p>
           </div>
           <button class="reset-button" id="resetButton" type="button">Start over</button>
+        </div>
+
+        <div class="difficulty-control">
+          <label for="difficulty">Difficulty</label>
+          <select id="difficulty">
+            <option value="easy">Easy</option>
+            <option value="normal" selected>Normal</option>
+            <option value="hard">Hard</option>
+          </select>
+          <p id="difficultyDescription">Reach 10 drops. Pollution takes away 2 drops.</p>
         </div>
 
         <div class="score-track" role="progressbar" aria-label="Clean water drops collected" aria-valuemin="0" aria-valuemax="10" aria-valuenow="0">
@@ -48,14 +58,15 @@
         <p class="game-hint">
           <span aria-hidden="true">💧</span> Clean water: +1 drop
           <span class="hint-divider" aria-hidden="true">·</span>
-          <span aria-hidden="true">🛢️</span> Pollution: −2 drops
+          <span aria-hidden="true">🛢️</span> Pollution:
+          <span id="pollutionPenalty">−2 drops</span>
         </p>
 
         <div class="celebration" id="celebration" role="status" aria-live="polite" hidden>
           <div class="confetti" id="confetti" aria-hidden="true"></div>
           <span class="celebration-icon" aria-hidden="true">🎉</span>
           <h2>Quest complete!</h2>
-          <p>You collected 10 clean water drops. Every drop makes a difference!</p>
+          <p id="celebrationText">You collected 10 clean water drops. Every drop makes a difference!</p>
         </div>
       </section>
 
@@ -65,6 +76,13 @@
         <a href="https://www.charitywater.org/" target="_blank" rel="noreferrer">charity: water</a>.
       </p>
     </main>
-    <footer>Made to celebrate a world where everyone has access to clean water.</footer>
+    <footer>
+      <p>Made to celebrate a world where everyone has access to clean water.</p>
+      <nav aria-label="charity: water links">
+        <a href="https://www.charitywater.org/" target="_blank" rel="noopener noreferrer">Visit charity: water</a>
+        <span aria-hidden="true">·</span>
+        <a href="https://www.charitywater.org/donate" target="_blank" rel="noopener noreferrer">Donate to clean water projects</a>
+      </nav>
+    </footer>
   </body>
 </html>
