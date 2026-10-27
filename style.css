@@ -190,7 +190,8 @@ h1 {
 }
 
 .start-button,
-.reset-button {
+.reset-button,
+.sound-button {
   min-height: 40px;
   padding: 8px 14px;
   border-radius: 7px;
@@ -216,13 +217,15 @@ h1 {
   opacity: .7;
 }
 
-.reset-button {
+.reset-button,
+.sound-button {
   border: 1px solid #cbd8d6;
   background: #fff;
   color: var(--ink);
 }
 
-.reset-button:hover {
+.reset-button:hover,
+.sound-button:hover {
   border-color: var(--blue);
   background: #eefaff;
 }

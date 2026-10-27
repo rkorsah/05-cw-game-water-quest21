@@ -9,6 +9,7 @@ const answerList = document.getElementById('answerList');
 const nextButton = document.getElementById('nextButton');
 const startButton = document.getElementById('startButton');
 const resetButton = document.getElementById('resetButton');
+const soundButton = document.getElementById('soundButton');
 const difficultySelect = document.getElementById('difficulty');
 const difficultyDescription = document.getElementById('difficultyDescription');
 const celebration = document.getElementById('celebration');
@@ -144,8 +145,13 @@ let answeredQuestion = false;
 let shuffledQuestions = [];
 let currentSettings = difficultySettings.normal;
 let audioContext;
+let soundEnabled = true;
 
 function playSound(frequency, duration) {
+	if (!soundEnabled) {
+		return;
+	}
+
 	const AudioContextClass = window.AudioContext || window.webkitAudioContext;
 
 	if (!AudioContextClass) {
@@ -169,6 +175,10 @@ function playSound(frequency, duration) {
 	volume.connect(audioContext.destination);
 	oscillator.start();
 	oscillator.stop(audioContext.currentTime + duration);
+}
+
+function playBoxSound() {
+	playSound(440, 0.1);
 }
 
 function playWinSound() {
@@ -350,6 +360,7 @@ function handleAnswerClick(event) {
 	event.currentTarget.querySelector('.box-answer').hidden = false;
 	event.currentTarget.querySelector('.box-prompt').hidden = true;
 	event.currentTarget.setAttribute('aria-label', `Box ${event.currentTarget.dataset.boxNumber}: ${selectedAnswer}`);
+	playBoxSound();
 
 	if (isCorrect) {
 		const bonusDrops = Math.floor(Math.random() * 3) + 1;
@@ -435,8 +446,20 @@ function resetGame() {
 	renderQuestion();
 }
 
+function toggleSound() {
+	soundEnabled = !soundEnabled;
+	soundButton.textContent = soundEnabled ? '🔊' : '🔇';
+	soundButton.setAttribute('aria-pressed', soundEnabled);
+	soundButton.setAttribute('aria-label', soundEnabled ? 'Turn sound off' : 'Turn sound on');
+
+	if (soundEnabled) {
+		playSound(587, 0.12);
+	}
+}
+
 startButton.addEventListener('click', startGame);
 resetButton.addEventListener('click', resetGame);
+soundButton.addEventListener('click', toggleSound);
 nextButton.addEventListener('click', showNextQuestion);
 difficultySelect.addEventListener('change', resetGame);
 resetGame();
