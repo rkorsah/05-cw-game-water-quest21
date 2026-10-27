@@ -47,6 +47,10 @@ function playSound(frequency, duration) {
 		audioContext = new AudioContextClass();
 	}
 
+	if (audioContext.state === 'suspended') {
+		audioContext.resume();
+	}
+
 	const oscillator = audioContext.createOscillator();
 	const volume = audioContext.createGain();
 	oscillator.frequency.value = frequency;
@@ -59,12 +63,12 @@ function playSound(frequency, duration) {
 }
 
 function playWinSound() {
-	const notes = [660, 784, 988, 1175];
+	const notes = [523, 659, 784, 1047, 1319];
 
 	for (let index = 0; index < notes.length; index++) {
 		setTimeout(function () {
-			playSound(notes[index], 0.18);
-		}, index * 140);
+			playSound(notes[index], 0.22);
+		}, index * 170);
 	}
 }
 
