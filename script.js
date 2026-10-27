@@ -58,6 +58,16 @@ function playSound(frequency, duration) {
 	oscillator.stop(audioContext.currentTime + duration);
 }
 
+function playWinSound() {
+	const notes = [660, 784, 988, 1175];
+
+	for (let index = 0; index < notes.length; index++) {
+		setTimeout(function () {
+			playSound(notes[index], 0.18);
+		}, index * 140);
+	}
+}
+
 function createTiles() {
 	const tileTypes = ['water', 'water', 'water', 'water', 'water', 'water', 'pollution', 'pollution', 'pollution'];
 
@@ -93,7 +103,7 @@ function celebrateWin() {
 	celebration.hidden = false;
 	celebrationText.textContent = `You collected ${currentSettings.goal} clean water drops. Every drop makes a difference!`;
 	gameMessage.textContent = 'You reached the clean water goal!';
-	playSound(880, 0.35);
+	playWinSound();
 	createConfetti();
 	disableBoard();
 }
