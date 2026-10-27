@@ -4,6 +4,8 @@ const scoreFill = document.getElementById('scoreFill');
 const scoreTrack = document.querySelector('.score-track');
 const gameMessage = document.getElementById('gameMessage');
 const gameBoard = document.getElementById('gameBoard');
+const roundDisplay = document.getElementById('roundDisplay');
+const startButton = document.getElementById('startButton');
 const resetButton = document.getElementById('resetButton');
 const difficultySelect = document.getElementById('difficulty');
 const difficultyDescription = document.getElementById('difficultyDescription');
@@ -30,8 +32,11 @@ const difficultySettings = {
 	}
 };
 const tileCount = 9;
+const maxRounds = 3;
 let score = 0;
 let gameOver = false;
+let gameStarted = false;
+let roundNumber = 1;
 let currentSettings = difficultySettings.normal;
 let milestonesReached = [];
 let audioContext;
@@ -72,6 +77,16 @@ function playWinSound() {
 	}
 }
 
+function playLoseSound() {
+	const notes = [392, 330, 262];
+
+	for (let index = 0; index < notes.length; index++) {
+		setTimeout(function () {
+			playSound(notes[index], 0.3);
+		}, index * 200);
+	}
+}
+
 function createTiles() {
 	const tileTypes = ['water', 'water', 'water', 'water', 'water', 'water', 'pollution', 'pollution', 'pollution'];
 
@@ -91,8 +106,17 @@ function createTiles() {
 		tile.textContent = '?';
 		tile.setAttribute('aria-label', `Reveal tile ${index + 1}`);
 		tile.dataset.type = tileTypes[index];
+		tile.disabled = !gameStarted;
 		tile.addEventListener('click', handleTileClick);
 		gameBoard.appendChild(tile);
+	}
+}
+
+function enableBoard() {
+	const tiles = gameBoard.querySelectorAll('.game-tile');
+
+	for (let index = 0; index < tiles.length; index++) {
+		tiles[index].disabled = false;
 	}
 }
 
@@ -104,12 +128,22 @@ function updateScore() {
 
 function celebrateWin() {
 	gameOver = true;
-	resetButton.textContent = 'Play again';
+	startButton.disabled = false;
+	startButton.textContent = 'Play again';
 	celebration.hidden = false;
 	celebrationText.textContent = `You collected ${currentSettings.goal} clean water drops. Every drop makes a difference!`;
 	gameMessage.textContent = 'You reached the clean water goal!';
 	playWinSound();
 	createConfetti();
+	disableBoard();
+}
+
+function finishGameWithLoss() {
+	gameOver = true;
+	startButton.disabled = false;
+	startButton.textContent = 'Play again';
+	gameMessage.textContent = `All three boards are empty. You collected ${score} of ${currentSettings.goal} drops. Select Play again to try once more.`;
+	playLoseSound();
 	disableBoard();
 }
 
@@ -161,7 +195,7 @@ function disableBoard() {
 }
 
 function handleTileClick(event) {
-	if (gameOver) {
+	if (!gameStarted || gameOver) {
 		return;
 	}
 
@@ -201,30 +235,57 @@ function handleTileClick(event) {
 	}
 
 	if (gameBoard.querySelectorAll(':disabled').length === tileCount) {
-		createTiles();
-		gameMessage.textContent = 'New tiles are ready. Keep collecting clean water!';
+		if (roundNumber === maxRounds) {
+			finishGameWithLoss();
+		} else {
+			roundNumber++;
+			roundDisplay.textContent = `Round ${roundNumber} of ${maxRounds}`;
+			createTiles();
+			gameMessage.textContent = 'New tiles are ready. Keep collecting clean water!';
+		}
 	}
 
+}
+
+function startGame() {
+	if (gameOver) {
+		resetGame();
+	}
+
+	if (gameStarted) {
+		return;
+	}
+
+	gameStarted = true;
+	startButton.disabled = true;
+	startButton.textContent = 'Playing';
+	gameMessage.textContent = 'Pick a covered tile to reveal what’s inside.';
+	enableBoard();
 }
 
 function resetGame() {
 	currentSettings = difficultySettings[difficultySelect.value];
 	score = 0;
 	gameOver = false;
-	resetButton.textContent = 'Start over';
+	gameStarted = false;
+	roundNumber = 1;
+	startButton.disabled = false;
+	startButton.textContent = 'Start';
 	milestonesReached = [];
 	celebration.hidden = true;
 	confetti.innerHTML = '';
 	goalDisplay.textContent = ` / ${currentSettings.goal} drops`;
+	roundDisplay.textContent = `Round ${roundNumber} of ${maxRounds}`;
 	scoreTrack.setAttribute('aria-valuemax', currentSettings.goal);
 	difficultyDescription.textContent = currentSettings.description;
 	const penaltyUnit = currentSettings.pollutionPenalty === 1 ? 'drop' : 'drops';
 	pollutionPenaltyDisplay.textContent = `−${currentSettings.pollutionPenalty} ${penaltyUnit}`;
-	gameMessage.textContent = 'Pick a covered tile to reveal what’s inside.';
+	gameMessage.textContent = 'Choose a difficulty, then select Start to play.';
 	updateScore();
 	createTiles();
 }
 
+startButton.addEventListener('click', startGame);
 resetButton.addEventListener('click', resetGame);
 difficultySelect.addEventListener('change', resetGame);
 resetGame();

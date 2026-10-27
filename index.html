@@ -32,7 +32,10 @@
             <p class="eyebrow">YOUR CLEAN WATER SCORE</p>
             <p class="score-line"><span id="score">0</span><span class="score-goal" id="scoreGoal"> / 10 drops</span></p>
           </div>
-          <button class="reset-button" id="resetButton" type="button">Start over</button>
+          <div class="game-actions">
+            <button class="start-button" id="startButton" type="button">Start</button>
+            <button class="reset-button" id="resetButton" type="button">Reset</button>
+          </div>
         </div>
 
         <div class="difficulty-control">
@@ -49,8 +52,9 @@
           <div class="score-fill" id="scoreFill"></div>
         </div>
 
+        <p class="round-display" id="roundDisplay">Round 1 of 3</p>
         <p class="game-message" id="gameMessage" role="status" aria-live="polite">
-          Pick a covered tile to reveal what’s inside.
+          Choose a difficulty, then select Start to play.
         </p>
 
         <div class="game-board" id="gameBoard" aria-label="Choose a tile"></div>
