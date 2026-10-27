@@ -104,6 +104,7 @@ function updateScore() {
 
 function celebrateWin() {
 	gameOver = true;
+	resetButton.textContent = 'Play again';
 	celebration.hidden = false;
 	celebrationText.textContent = `You collected ${currentSettings.goal} clean water drops. Every drop makes a difference!`;
 	gameMessage.textContent = 'You reached the clean water goal!';
@@ -210,6 +211,7 @@ function resetGame() {
 	currentSettings = difficultySettings[difficultySelect.value];
 	score = 0;
 	gameOver = false;
+	resetButton.textContent = 'Start over';
 	milestonesReached = [];
 	celebration.hidden = true;
 	confetti.innerHTML = '';
