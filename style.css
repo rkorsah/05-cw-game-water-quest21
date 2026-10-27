@@ -300,14 +300,14 @@ h1 {
 
 .quiz-answers {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 12px;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
 }
 
 .quiz-answer {
   position: relative;
   display: flex;
-  min-height: 126px;
+  min-height: 116px;
   flex-direction: column;
   align-items: flex-start;
   justify-content: flex-end;
@@ -351,8 +351,19 @@ h1 {
   line-height: 1;
 }
 
+.box-prompt {
+  color: #56808c;
+  font-size: 11px;
+  font-weight: 600;
+}
+
 .box-answer {
   line-height: 1.4;
+}
+
+.box-answer[hidden],
+.box-prompt[hidden] {
+  display: none;
 }
 
 .quiz-answer.is-correct {
@@ -601,12 +612,29 @@ select:focus-visible {
   }
 
   .quiz-answers {
-    grid-template-columns: 1fr;
-    gap: 10px;
+    gap: 8px;
   }
 
   .quiz-answer {
-    min-height: 92px;
+    min-height: 94px;
+    align-items: center;
+    gap: 5px;
+    padding: 10px 6px;
+    text-align: center;
+  }
+
+  .box-number {
+    top: 7px;
+    right: 7px;
+    font-size: 8px;
+  }
+
+  .box-icon {
+    font-size: 21px;
+  }
+
+  .box-answer {
+    font-size: 12px;
   }
 
   .game-hint {

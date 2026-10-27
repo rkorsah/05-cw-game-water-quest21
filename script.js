@@ -218,7 +218,17 @@ function updateProgress() {
 
 function renderQuestion() {
 	const currentQuestion = shuffledQuestions[questionIndex];
-	const shuffledChoices = shuffleItems(currentQuestion.choices.slice());
+	const incorrectChoices = currentQuestion.choices.filter(function (choice) {
+		return choice !== currentQuestion.answer;
+	});
+	const boxChoices = [currentQuestion.answer];
+
+	for (let index = 0; index < 8; index++) {
+		const randomIndex = Math.floor(Math.random() * incorrectChoices.length);
+		boxChoices.push(incorrectChoices[randomIndex]);
+	}
+
+	const shuffledChoices = shuffleItems(boxChoices);
 	questionPrompt.textContent = currentQuestion.question;
 	roundDisplay.textContent = `Question ${questionIndex + 1} of ${shuffledQuestions.length}`;
 	answerList.innerHTML = '';
@@ -232,6 +242,8 @@ function renderQuestion() {
 		answerButton.className = 'quiz-answer';
 		answerButton.type = 'button';
 		answerButton.dataset.answer = shuffledChoices[index];
+		answerButton.dataset.boxNumber = index + 1;
+		answerButton.setAttribute('aria-label', `Mystery water box ${index + 1}`);
 		answerButton.disabled = !gameStarted;
 
 		const boxNumber = document.createElement('span');
@@ -241,15 +253,22 @@ function renderQuestion() {
 
 		const boxIcon = document.createElement('span');
 		boxIcon.className = 'box-icon';
-		boxIcon.textContent = '💧';
+		boxIcon.textContent = '📦';
 		boxIcon.setAttribute('aria-hidden', 'true');
+
+		const boxPrompt = document.createElement('span');
+		boxPrompt.className = 'box-prompt';
+		boxPrompt.textContent = 'Tap to reveal';
+		boxPrompt.setAttribute('aria-hidden', 'true');
 
 		const answerText = document.createElement('span');
 		answerText.className = 'box-answer';
 		answerText.textContent = shuffledChoices[index];
+		answerText.hidden = true;
 
 		answerButton.appendChild(boxNumber);
 		answerButton.appendChild(boxIcon);
+		answerButton.appendChild(boxPrompt);
 		answerButton.appendChild(answerText);
 		answerButton.addEventListener('click', handleAnswerClick);
 		answerList.appendChild(answerButton);
@@ -326,11 +345,11 @@ function handleAnswerClick(event) {
 
 	for (let index = 0; index < answerButtons.length; index++) {
 		answerButtons[index].disabled = true;
-
-		if (answerButtons[index].dataset.answer === currentQuestion.answer) {
-			answerButtons[index].classList.add('is-correct');
-		}
 	}
+
+	event.currentTarget.querySelector('.box-answer').hidden = false;
+	event.currentTarget.querySelector('.box-prompt').hidden = true;
+	event.currentTarget.setAttribute('aria-label', `Box ${event.currentTarget.dataset.boxNumber}: ${selectedAnswer}`);
 
 	if (isCorrect) {
 		const bonusDrops = Math.floor(Math.random() * 3) + 1;
@@ -342,6 +361,7 @@ function handleAnswerClick(event) {
 	} else {
 		lives--;
 		event.currentTarget.classList.add('is-incorrect');
+		event.currentTarget.setAttribute('aria-label', `Incorrect answer in box ${event.currentTarget.dataset.boxNumber}: ${selectedAnswer}`);
 		gameMessage.textContent = `Not quite. You lost 1 life. The correct answer is: ${currentQuestion.answer}.`;
 		playSound(190, 0.2);
 	}
