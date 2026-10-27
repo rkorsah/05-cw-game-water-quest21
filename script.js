@@ -20,16 +20,16 @@ const confetti = document.getElementById('confetti');
 
 const difficultySettings = {
 	easy: {
-		startingLives: 4,
-		description: 'Start with 4 lives. Correct answers add a life.'
+		startingLives: 6,
+		description: 'Start with 6 lives. Correct answers add a life.'
 	},
 	normal: {
-		startingLives: 3,
-		description: 'Start with 3 lives. Correct answers add a life.'
+		startingLives: 5,
+		description: 'Start with 5 lives. Correct answers add a life.'
 	},
 	hard: {
-		startingLives: 2,
-		description: 'Start with 2 lives. Correct answers add a life.'
+		startingLives: 4,
+		description: 'Start with 4 lives. Correct answers add a life.'
 	}
 };
 
