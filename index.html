@@ -22,15 +22,15 @@
         <p class="eyebrow">THE CLEAN WATER QUEST</p>
         <h1 id="gameTitle">Every drop counts.</h1>
         <p class="intro-copy">
-          Find clean water and dodge the pollution. Choose your difficulty and collect clean water drops.
+          Answer clean-water questions, earn bonus drops, and keep your lives to finish the quiz.
         </p>
       </section>
 
       <section class="game-card" aria-label="Clean Water Quest game">
         <div class="game-top">
           <div>
-            <p class="eyebrow">YOUR CLEAN WATER SCORE</p>
-            <p class="score-line"><span id="score">0</span><span class="score-goal" id="scoreGoal"> / 10 drops</span></p>
+            <p class="eyebrow">RANDOM WATER REWARDS</p>
+            <p class="score-line"><span id="score">0</span><span class="score-goal"> bonus drops</span></p>
           </div>
           <div class="game-actions">
             <button class="start-button" id="startButton" type="button">Start</button>
@@ -45,31 +45,33 @@
             <option value="normal" selected>Normal</option>
             <option value="hard">Hard</option>
           </select>
-          <p id="difficultyDescription">Reach 10 drops. Pollution takes away 2 drops.</p>
+          <p id="difficultyDescription">Start with 3 lives. Correct answers add a life.</p>
         </div>
 
-        <div class="score-track" role="progressbar" aria-label="Clean water drops collected" aria-valuemin="0" aria-valuemax="10" aria-valuenow="0">
+        <p class="lives-display">Lives: <span id="lives">3</span></p>
+        <div class="score-track" role="progressbar" aria-label="Quiz questions answered" aria-valuemin="0" aria-valuemax="10" aria-valuenow="0">
           <div class="score-fill" id="scoreFill"></div>
         </div>
 
-        <p class="round-display" id="roundDisplay">Round 1 of 3</p>
+        <p class="round-display" id="roundDisplay">Question 1 of 10</p>
         <p class="game-message" id="gameMessage" role="status" aria-live="polite">
           Choose a difficulty, then select Start to play.
         </p>
 
-        <div class="game-board" id="gameBoard" aria-label="Choose a tile"></div>
+        <h2 class="question-prompt" id="questionPrompt"></h2>
+        <div class="quiz-answers" id="answerList" aria-label="Answer choices"></div>
+        <button class="next-button" id="nextButton" type="button" hidden>Next question</button>
 
         <p class="game-hint">
-          <span aria-hidden="true">💧</span> Clean water: +1 drop
+          Correct: +1 life and a random 1–3 bonus drops.
           <span class="hint-divider" aria-hidden="true">·</span>
-          <span aria-hidden="true">🛢️</span> Pollution:
-          <span id="pollutionPenalty">−2 drops</span>
+          Incorrect: −1 life.
         </p>
 
         <div class="celebration" id="celebration" role="status" aria-live="polite" hidden>
           <div class="confetti" id="confetti" aria-hidden="true"></div>
-          <span class="celebration-icon" aria-hidden="true">🎉</span>
-          <h2>Quest complete!</h2>
+          <span class="celebration-icon" id="celebrationIcon" aria-hidden="true">🎉</span>
+          <h2 id="celebrationTitle">Quiz complete!</h2>
           <p id="celebrationText">You collected 10 clean water drops. Every drop makes a difference!</p>
         </div>
       </section>

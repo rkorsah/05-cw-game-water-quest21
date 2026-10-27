@@ -162,6 +162,22 @@ h1 {
   font-size: 14px;
 }
 
+.lives-display {
+  margin: 15px 0 0;
+  color: var(--ink);
+  font-size: 14px;
+  font-weight: 700;
+  text-align: center;
+}
+
+.lives-display span {
+  display: inline-block;
+  min-width: 24px;
+  margin-left: 4px;
+  color: #007da8;
+  font-size: 18px;
+}
+
 .start-button,
 .reset-button {
   min-height: 40px;
@@ -266,47 +282,74 @@ h1 {
   text-align: center;
 }
 
-.game-board {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 12px;
-  width: min(100%, 390px);
-  margin: 0 auto;
+.question-prompt {
+  margin: 12px 0 16px;
+  color: var(--ink);
+  font-size: 20px;
+  line-height: 1.35;
+  text-align: center;
 }
 
-.game-tile {
+.quiz-answers {
   display: grid;
-  aspect-ratio: 1.3;
-  place-items: center;
-  border: 1px solid #d5e8ec;
-  border-radius: 10px;
-  background: linear-gradient(145deg, #eafaff, #d5f3f7);
-  color: #1684a4;
-  font-family: Manrope, 'DM Sans', sans-serif;
-  font-size: 29px;
+  gap: 9px;
+}
+
+.quiz-answer {
+  min-height: 48px;
+  padding: 11px 14px;
+  border: 1px solid #cfe2e7;
+  border-radius: 8px;
+  background: linear-gradient(145deg, #f3fcff, #e6f7fb);
+  color: var(--ink);
+  font: inherit;
+  font-size: 14px;
   font-weight: 700;
   cursor: pointer;
+  text-align: left;
   transition: transform .15s, border-color .15s, background-color .15s;
 }
 
-.game-tile:not(:disabled):hover {
+.quiz-answer:not(:disabled):hover {
   transform: translateY(-2px);
   border-color: var(--blue);
 }
 
-.game-tile:disabled {
+.quiz-answer:disabled {
   cursor: default;
 }
 
-.game-tile.is-water {
-  border-color: #9cdeeb;
-  background: #e2f8fc;
+.quiz-answer.is-correct {
+  border-color: #51c4af;
+  background: #e7f8f2;
 }
 
-.game-tile.is-pollution {
-  border-color: #e9d5b0;
-  background: #fff7e7;
-  font-size: 24px;
+.quiz-answer.is-incorrect {
+  border-color: #e7a497;
+  background: #fff0ec;
+}
+
+.next-button {
+  display: block;
+  min-height: 42px;
+  margin: 14px 0 0 auto;
+  padding: 9px 16px;
+  border: 1px solid #0086b3;
+  border-radius: 7px;
+  background: #00a9e0;
+  color: #fff;
+  font: inherit;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.next-button:hover {
+  background: #008fbd;
+}
+
+.next-button[hidden] {
+  display: none;
 }
 
 .game-hint {
@@ -340,6 +383,19 @@ h1 {
   background: #fff9de;
   text-align: center;
   animation: celebrate-in .45s ease-out both;
+}
+
+.celebration.is-loss {
+  border-color: #e8c3b9;
+  background: #fff3ef;
+}
+
+.celebration.is-loss h2 {
+  color: #7c392b;
+}
+
+.celebration.is-loss p {
+  color: #704b43;
 }
 
 .celebration-icon {
@@ -502,12 +558,8 @@ select:focus-visible {
     padding: 20px 16px 18px;
   }
 
-  .game-board {
-    gap: 8px;
-  }
-
-  .game-tile {
-    border-radius: 8px;
+  .question-prompt {
+    font-size: 18px;
   }
 
   .game-hint {

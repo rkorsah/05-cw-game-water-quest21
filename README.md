@@ -1,15 +1,14 @@
 # Clean Water Quest
 
-A small, responsive browser game inspired by charity: water. Flip tiles to find clean water drops, avoid pollution, and reach your selected difficulty's goal.
+A small, responsive clean-water quiz inspired by charity: water. Answer questions about clean water, gain lives for correct answers, and collect random bonus drops.
 
 ## How to play
 
 1. Choose Easy, Normal, or Hard, then select **Start**.
-2. Choose any covered tile to reveal what’s inside.
-3. A clean water tile adds one drop to your score. A pollution tile takes away drops based on your difficulty.
-4. Reach your goal within three boards to win. If all three boards are empty first, the game ends in a loss.
-5. Choose Easy (8 drops to win, pollution takes 1), Normal (10 drops, pollution takes 2), or Hard (12 drops, pollution takes 3). Changing difficulty resets the game.
-6. Sound effects play when supported by your browser, with distinct melodies for winning and losing. Select **Reset** to return to the ready-to-start screen.
+2. Select the answer you think is correct. Correct answers add one life and award a random 1–3 bonus drops. Incorrect answers take away one life.
+3. Answer all ten shuffled questions to win. The quiz ends if your lives reach zero.
+4. Easy starts with 4 lives, Normal with 3, and Hard with 2. Changing difficulty starts a new quiz.
+5. Sound effects play when supported by your browser, with distinct melodies for winning and losing. Select **Reset** to return to the ready-to-start screen.
 
 Use the links at the bottom of the game to visit charity: water or donate to clean water projects.
 
