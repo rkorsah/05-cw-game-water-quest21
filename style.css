@@ -23,6 +23,11 @@ body {
   display: flex;
   flex-direction: column;
   line-height: 1.5;
+  background-color: #e8f4ff;
+  background-image: linear-gradient(rgba(232, 244, 255, .58), rgba(232, 244, 255, .58)), url('img/water-background.svg');
+  background-position: center;
+  background-size: cover;
+  background-attachment: fixed;
 }
 
 button,
@@ -47,10 +52,16 @@ a {
   gap: 10px;
   color: var(--ink);
   font-family: Manrope, 'DM Sans', sans-serif;
-  font-size: 21px;
+  font-size: clamp(24px, 3vw, 28px);
   font-weight: 800;
-  letter-spacing: -1px;
+  letter-spacing: -1.2px;
   text-decoration: none;
+}
+
+.brand-drop {
+  width: 21px;
+  height: 29px;
+  flex: 0 0 auto;
 }
 
 .brand-colon {
@@ -581,7 +592,12 @@ select:focus-visible {
 
   .brand {
     gap: 8px;
-    font-size: 19px;
+    font-size: 22px;
+  }
+
+  .brand-drop {
+    width: 19px;
+    height: 26px;
   }
 
   .header-note {

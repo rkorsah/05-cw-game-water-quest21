@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="1200" viewBox="0 0 1600 1200" fill="none">
+  <defs>
+    <linearGradient id="water" x1="800" y1="0" x2="800" y2="1200" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#DDF5FF"/>
+      <stop offset=".52" stop-color="#A9E3F5"/>
+      <stop offset="1" stop-color="#67C6E2"/>
+    </linearGradient>
+    <linearGradient id="shine" x1="220" y1="100" x2="1420" y2="1000" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#fff" stop-opacity=".68"/>
+      <stop offset="1" stop-color="#fff" stop-opacity="0"/>
+    </linearGradient>
+    <pattern id="ripples" width="320" height="150" patternUnits="userSpaceOnUse">
+      <path d="M-80 46c48-28 96-28 144 0s96 28 144 0 96-28 144 0" stroke="#fff" stroke-opacity=".44" stroke-width="3"/>
+      <path d="M-30 98c38-19 76-19 114 0s76 19 114 0 76-19 114 0 76 19 114 0" stroke="#2B9FC4" stroke-opacity=".16" stroke-width="2"/>
+    </pattern>
+  </defs>
+  <path fill="url(#water)" d="M0 0h1600v1200H0z"/>
+  <path fill="url(#shine)" d="M0 0h1600v1200H0z"/>
+  <path fill="url(#ripples)" d="M0 0h1600v1200H0z"/>
+  <path fill="#fff" fill-opacity=".12" d="M0 790c178-92 352-72 521 10 206 101 345 118 574 23 189-79 323-78 505-1v378H0V790Z"/>
+  <path fill="#138DB5" fill-opacity=".1" d="M0 950c216-94 369-68 555 14 190 85 344 105 552 26 205-78 323-69 493-2v212H0V950Z"/>
+</svg>
