@@ -290,43 +290,81 @@ h1 {
   text-align: center;
 }
 
+.box-instruction {
+  margin: 0 0 10px;
+  color: var(--muted);
+  font-size: 13px;
+  font-weight: 700;
+  text-align: center;
+}
+
 .quiz-answers {
   display: grid;
-  gap: 9px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
 }
 
 .quiz-answer {
-  min-height: 48px;
-  padding: 11px 14px;
-  border: 1px solid #cfe2e7;
-  border-radius: 8px;
-  background: linear-gradient(145deg, #f3fcff, #e6f7fb);
+  position: relative;
+  display: flex;
+  min-height: 126px;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-end;
+  gap: 8px;
+  padding: 14px;
+  border: 1px solid #9ed5e4;
+  border-radius: 12px;
+  background: linear-gradient(145deg, #f3fcff 0%, #e6f7fb 58%, #d2f0f7 100%);
   color: var(--ink);
   font: inherit;
   font-size: 14px;
   font-weight: 700;
   cursor: pointer;
   text-align: left;
-  transition: transform .15s, border-color .15s, background-color .15s;
+  box-shadow: 0 4px 0 #b6e0e9;
+  transition: transform .15s, border-color .15s, background-color .15s, box-shadow .15s;
 }
 
 .quiz-answer:not(:disabled):hover {
-  transform: translateY(-2px);
-  border-color: var(--blue);
+  transform: translateY(-3px);
+  border-color: #00a9e0;
+  box-shadow: 0 7px 0 #b6e0e9;
 }
 
 .quiz-answer:disabled {
   cursor: default;
 }
 
+.box-number {
+  position: absolute;
+  top: 10px;
+  right: 12px;
+  color: #56808c;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+
+.box-icon {
+  font-size: 25px;
+  line-height: 1;
+}
+
+.box-answer {
+  line-height: 1.4;
+}
+
 .quiz-answer.is-correct {
   border-color: #51c4af;
   background: #e7f8f2;
+  box-shadow: 0 4px 0 #b6e9d8;
 }
 
 .quiz-answer.is-incorrect {
   border-color: #e7a497;
   background: #fff0ec;
+  box-shadow: 0 4px 0 #f0c9bf;
 }
 
 .next-button {
@@ -560,6 +598,15 @@ select:focus-visible {
 
   .question-prompt {
     font-size: 18px;
+  }
+
+  .quiz-answers {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+
+  .quiz-answer {
+    min-height: 92px;
   }
 
   .game-hint {

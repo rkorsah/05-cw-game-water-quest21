@@ -231,9 +231,26 @@ function renderQuestion() {
 		const answerButton = document.createElement('button');
 		answerButton.className = 'quiz-answer';
 		answerButton.type = 'button';
-		answerButton.textContent = shuffledChoices[index];
 		answerButton.dataset.answer = shuffledChoices[index];
 		answerButton.disabled = !gameStarted;
+
+		const boxNumber = document.createElement('span');
+		boxNumber.className = 'box-number';
+		boxNumber.textContent = `BOX ${index + 1}`;
+		boxNumber.setAttribute('aria-hidden', 'true');
+
+		const boxIcon = document.createElement('span');
+		boxIcon.className = 'box-icon';
+		boxIcon.textContent = '💧';
+		boxIcon.setAttribute('aria-hidden', 'true');
+
+		const answerText = document.createElement('span');
+		answerText.className = 'box-answer';
+		answerText.textContent = shuffledChoices[index];
+
+		answerButton.appendChild(boxNumber);
+		answerButton.appendChild(boxIcon);
+		answerButton.appendChild(answerText);
 		answerButton.addEventListener('click', handleAnswerClick);
 		answerList.appendChild(answerButton);
 	}
